@@ -1,35 +1,45 @@
-# Estructura planeada – Billetera Clara API
+# Estructura planeada
 
-> Diseño vivo: se actualiza a medida que avanzo. Si algo cambia,
-> no lo borro, lo marco como "Descartada" y explico por qué (→ D-XXX).
+## NombreClase
 
-## Regla de dependencias entre capas
+- **Paquete:**
+- **Qué es:** una frase.
+- **Datos que guarda:**
+- **Qué hace:**
+- **Qué NO hace:**
+- **Estado:** Planeada / Creada / Descartada
+# Estructura planeada
 
-(Escribe con tus palabras qué capa puede conocer a cuál. Etapa 3.)
+## Client
+- **Paquete:** (Etapa 3)
+- **Qué es:** Una persona registrada que puede tener una billetera.
+- **Datos que guarda:** id, fullName, documentNumber, email, createdAt, status
+- **Qué hace:** (Etapa 4)
+- **Qué NO hace:** No modifica saldos ni accede a billeteras de otros clientes.
+- **Estado:** Planeada
 
-## Paquete: `com.mikko.wallet_api.<paquete>`
+## Wallet
+- **Paquete:** (Etapa 3)
+- **Qué es:** La cuenta de dinero de un cliente, en una única moneda (ARS).
+- **Datos que guarda:** id, owner, currency, balance, status, createdAt
+- **Qué hace:** (Etapa 4)
+- **Qué NO hace:** No permite que su saldo se cambie libremente desde afuera;
+  el saldo solo cambia a través de una operación válida (depósito, retiro o transferencia).
+- **Estado:** Planeada
 
-**Responsabilidad del paquete:** una frase.
+## Movement
+- **Paquete:** (Etapa 3)
+- **Qué es:** El registro histórico de un cambio de saldo en una billetera.
+- **Datos que guarda:** id, wallet, type, amount, description, createdAt,
+  resultingBalance, operationId
+- **Qué hace:** (Etapa 4)
+- **Qué NO hace:** Nunca se modifica ni se elimina una vez creado.
+- **Estado:** Planeada
 
-| Clase / Interfaz | Tipo                             | Responsabilidad (una sola) | Colabora con | Estado                         |
-|------------------|----------------------------------|----------------------------|--------------|--------------------------------|
-| `NombreClase`    | Clase / Interfaz / Enum / Record | Qué hace y qué NO hace     | `OtraClase`  | Planeada / Creada / Descartada |
-
-### Detalle (opcional, cuando llegue a esa etapa)
-
-#### `NombreClase`
-
-- **Por qué existe:**
-- **Operaciones principales (en lenguaje natural):**
-    - Ej.: "recibe un pedido de X y devuelve Y"
-- **Qué nunca debería hacer:**
-- **Requisitos que cubre:** RN-XX, AXX
-
----
-
-## Diagrama (opcional)
-
-```mermaid
-classDiagram
-    ClaseA --> ClaseB: usa
-```
+## Transfer
+- **Paquete:** (Etapa 3)
+- **Qué es:** El envío de dinero de una billetera a otra como una sola operación indivisible.
+- **Datos que guarda:** originWallet, destinationWallet, amount, reference, operationId
+- **Qué hace:** (Etapa 4)
+- **Qué NO hace:** No mueve dinero entre la misma billetera ni queda completada a medias.
+- **Estado:** Por decidir → ¿clase propia o solo dos Movement unidos por operationId? (D-XXX)
