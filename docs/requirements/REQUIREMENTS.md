@@ -23,3 +23,15 @@ Estados: ⬜ Pendiente → 🟨 Diseñada → 🟧 Implementada → ✅ Probada
 | RN-13 | Un movimiento no se modifica ni elimina                   | —             |                 |                         | ⬜     |
 | RN-14 | Historial: más reciente primero                           | A12           |                 |                         | ⬜     |
 | RN-15 | Saldo resultante del movimiento = saldo real posterior    | A05, A07      |                 |                         | ⬜     |
+
+| ID     | Requisito de la API                                    | Estado |
+|--------|--------------------------------------------------------|--------|
+| API-01 | Crear y consultar clientes                             | ⬜     |
+| API-02 | Crear y consultar billeteras                           | ⬜     |
+| API-03 | Operaciones separadas: depósito, retiro, transferencia | ⬜     |
+| API-04 | Consultar historial de una billetera                   | ⬜     |
+| API-05 | Filtrar historial por tipo y rango de fechas           | ⬜     |
+| API-06 | Paginar historial (o justificar por qué no)            | ⬜     |
+| API-07 | Formato uniforme de errores                            | ⬜     |
+| API-08 | Distinguir 4 tipos de error                            | ⬜     |
+| API-09 | No exponer detalles internos ni trazas                 | ⬜     |
