@@ -1,35 +1,21 @@
-# TODOs – Billetera Clara API
+# TODOs
 
-> Regla: máximo 3 tareas en "Ahora". Si quiero empezar otra, primero termino o muevo una.
+## Ahora
 
-## 🔨 Ahora
-- [ ] Instalar/verificar JDK LTS y configurarlo en IntelliJ (Etapa 0)
 
-## ⏭️ Siguiente
-- [ ] Generar proyecto en Spring Initializr (Etapa 1)
-- [ ] Registrar D-002 dependencias en DECISIONES.md
+## Pendiente
 
-## 🚧 Bloqueado
-- [ ] Tarea — **bloqueada por:** motivo / E-00X
 
-## 📋 Backlog por etapa
-
-### Etapa 0 – Entorno
-- [ ] Instalar cliente HTTP
-- [ ] Preparar PostgreSQL
-- [ ] Primer commit con estructura inicial
-
-### Etapa 1 – Proyecto base
-- [ ] ...
-
-### Etapa 2 – Arrancar la app
-- [ ] ...
-
-(una sección por etapa, hasta la 14)
-
-## 💡 Ideas / mejoras opcionales (no tocar hasta terminar lo obligatorio)
-- [ ] Documentación interactiva de la API (sección 14)
-
-## ✅ Hecho
-- [x] 2026-09-22 – Leer el enunciado completo
-- [x] 2026-09-22 – Crear estructura de docs/
+## Hecho
+- [x] 2026-09-22 – Leer el enunciado completo del PDF
+- [x] 2026-09-22 – Elegir dependencias en Spring Initializr (Web, Validation, JPA, H2, PostgreSQL)
+- [x] 2026-09-22 – Generar el proyecto base (WalletApiApplication) (Etapa 1)
+- [x] 2026-09-22 – Crear estructura de docs/ (decisions, hypothesis, todos, requirements, sessions, cards)
+- [x] 2026-09-22 – Crear DECISIONS.md y su molde MODEL-DECISIONS.md
+- [x] 2026-09-22 – Crear ERRORS.md y LEARNING.md
+- [x] 2026-09-22 – Crear TODOS.md y su molde MODEL-TODOS.md
+- [x] 2026-09-22 – Definir convención: nombres de archivos/código en inglés, contenido de docs en español
+- [x] 2026-09-22 – Instalar plugin Diagrams.net en IntelliJ
+- [x] 2026-09-23 – Primera versión de STRUCTURE.md: Client, Wallet, Movement, Transfer
+- [x] 2026-09-23 – Primer borrador de rutas de la API (clientes y billeteras)
+- 
