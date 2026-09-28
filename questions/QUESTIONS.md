@@ -73,3 +73,79 @@ dependencias transitivas, vulnerabilidades y conflictos de versiones que no nece
   Además esta: `<maven.compiler.source>21</maven.compiler.source>
   <maven.compiler.target>21</maven.compiler.target>`
   Idealmente en las 3 versiones debería ser la misma
+
+___
+
+### Investigar:
+
+• Qué es el método de entrada de Java y qué devuelve el arranque de Spring.
+El método de entrada de java es main ya que la JVM al hacer run lo primero que busca es donde está main.
+Pero en springboot tenemos: SpringApplication.run (WalletApiApplication.class, args); y lo que ocurre es que main llama
+a SpringApplication.run.
+Y spring devuelve el ApplicationContext que es el contendor de Spring que administra los objetos/beans.
+• Qué es el contexto de aplicación.
+Contexto == Contenedor de Spring == ApplicationContext
+Es el encargado de crear, guardar, configurar y conectar los objectos que forman tu aplicación
+Analogía de restaurante:
+ApplicationContext -> El restaurante y su sistema de organización
+Beans -> Los empleados y recursos del restaurante
+Spring -> El gerente que los crea, configura y coordina.
+Dependency Injection -> El gerente le entrega a cada empleado las herramientas/personas que necesita.
+• Qué significa servidor web integrado.
+Un servidor web integrado en Spring Boot significa que el servidor web viene incluido dentro de tu aplicación, en lugar
+de tener que instalar y configurar un servidor web por separado.
+No ejecutaste:tomcat start ni instalaste un Tomcat independiente.
+Tomcat es el componente que recibe las solicitudes HTTP.
+• Qué es un perfil de configuración.
+Un perfil de configuración es una forma de decirle a spring "Usa esta configuración dependiendo del entorno en el que
+estoy ejecutando la aplicación" ahí aparecen los perfiles como:
+aplication.properties
+aplication-dev.properties
+aplication-prod.properties
+y al arrancar haces algo como mvn spring-boot:run -Dspring-boot.run.profiles=dev para arrancar el perfil dev o mediante
+una variable de entorno SPRING_PROFILES_ACTIVE=dev.
+En tus logs apacere algo como No active profile set, falling back to 1 default profile: "default" en este caso por
+defecto
+• Cómo distinguir advertencias de errores en los registros.
+Al compilar una app de spring tenemos diferentes log:
+INFO
+↓
+"Te estoy contando qué estoy haciendo."
+
+WARN
+↓
+"Algo merece atención, pero puedo continuar."
+
+ERROR
+↓
+"Tengo un problema."
+
+FATAL
+↓
+"Problema crítico."
+En Spring Boot normalmente FATAL no es un nivel que vas a ver habitualmente con la configuración estándar.
+
+### Preguntas de control Etapa 2
+
+1 ¿Qué parte pertenece a Java y qué parte agrega Spring Boot?
+┌──────────────────────────────────────┐
+│ WalletApiApplication │
+│ │
+│ Java │
+│ ├── public class │
+│ ├── public static void main ()       │
+│ ├── String[] args │
+│ └── sintaxis Java │
+│ │
+│ Spring Boot │
+│ ├── @SpringBootApplication │
+│ └── SpringApplication.run (...)      │
+└──────────────────────────────────────┘
+2 ¿Por qué puede existir un servidor aunque todavía no hayas creado una ruta?
+No necesitas rotas para tener un servidor pero si necesitas un servidor para tener rutas.
+si mandamos una ruta al servidor y dice "404 not found" el servidor respondió, pero la ruta no está creada.
+3 ¿Qué diferencia hay entre que la aplicación compile y que arranque correctamente?
+Compilar = comprobar que tu código puede convertirse en bytecode ejecutable -> javac
+Arrancar = ejecutar ese bytecode y conseguir que toda la aplicación se inicialice correctamente -> JVM
+4 ¿Qué revisarías primero si el puerto ya está ocupado?
+Lo que haría sería ver quien lo esta usando lsof -i :8080 lo mas probable es que sea otra app springboot
