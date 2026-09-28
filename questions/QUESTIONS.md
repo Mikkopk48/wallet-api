@@ -149,3 +149,56 @@ Compilar = comprobar que tu código puede convertirse en bytecode ejecutable -> 
 Arrancar = ejecutar ese bytecode y conseguir que toda la aplicación se inicialice correctamente -> JVM
 4 ¿Qué revisarías primero si el puerto ya está ocupado?
 Lo que haría sería ver quien lo esta usando lsof -i :8080 lo mas probable es que sea otra app springboot
+
+### Investiga Etapa 3
+
+• Qué significan arquitectura por capas, cohesión y acoplamiento.
+Significa dividir una aplicación en diferentes niveles, donde cada uno tiene una responsabilidad concreta.
+En sprinboot:
+Controller:Recibir peticiones
+Service:Ejecutar la lógica de negocio
+Repository:Comunicarse con la base de datos
+Database:Almacenar los datos
+Principios
+Arquitectura por capas: separa el sistema en responsabilidades.
+Cohesión: intenta que cada capa/clase tenga responsabilidades fuertemente relacionadas.
+Acoplamiento: intenta que las capas/clases dependan lo menos posible unas de otra
+
+• Qué responsabilidad distingue a un controlador, un servicio y un repositorio.
+Controller:Recibir peticiones
+Service:Ejecutar la lógica de negocio
+Repository:Comunicarse con la base de datos
+Database:Almacenar los datos
+• Qué es una dependencia circular y por qué dificulta el diseño.
+Cuando 2 o mas componentes dependen unos de otros formando un círculo.
+Que A necesite de B, pero B necesite de A. Esto hace que haya un acoplamiento en el sistema.
+• Diferencia entre organizar paquetes por capa y por funcionalidad.
+La diferencia está en el criterio que usás para agrupar las clases.
+Si tuviera una app bancaria con Account|Client|Transfer
+Por Capa:
+controller/accoutController/clientController/transferController
+service/accoutService/clientService/transferService
+repository/accoutRepository/clientRepository/transferRepository
+Por Funcionalidades:
+account/accoutController/accoutService/accoutRepository
+account/clientController/clientService/clientRepository
+account/transferController/transferService/transferRepository
+
+Organizar por funcionalidades es mas facil en un proyecto grande mientras que organizar por funcionalidades es mucho mas facil para entrender la estructura del proyecto a la hora de leerlo
+• Por qué la clase de arranque suele ubicarse por encima de los demás paquetes.
+Porque la ubicación de la clase de arranque determina, por defecto, desde donde Spring empieza a buscar componentes
+La clase de arranque suele ubicarse en el paquete raíz para que el component scanning pueda descubrir automáticamente todos los componentes de la aplicación.
+
+### Preguntas de control Etapa 3
+1 ¿Dónde viviría la regla de fondos suficientes y por qué?
+Service
+2 ¿Quién debería saber que la comunicación usa HTTP?
+Controller
+3 ¿Quién debería saber cómo consultar la base de datos?
+Repository
+4 ¿Qué síntoma indica que una clase tiene demasiadas responsabilidades?
+No puedes describir qué hace en una sola frase sin usar "y". Por ejemplo: "valida el cliente y calcula saldos y envía emails…".
+Cambia por muchos motivos distintos. Si la tocas cuando cambia una regla de dinero, cuando cambia el formato del email y cuando cambia la base de datos, tiene varias responsabilidades.
+Recibe muchas dependencias en el constructor.
+Sus pruebas necesitan mucha preparación para probar una sola cosa.
+
