@@ -88,3 +88,29 @@ Elegí **Opción B**.
 
 - Gano una concordancia con todos los paquetes de la app
 - No pierdo nada.
+
+___
+
+## D-003 – Organizar paquetes por capa técnica
+
+- **Fecha:** 2026-09-28
+- **Etapa:** Etapa 3
+- **Categoría:** Estructura
+- **Estado:** Vigente
+
+### Contexto
+Tenía que decidir cómo agrupar las clases en paquetes: por capa técnica
+(web, service, repository...) o por funcionalidad de negocio (client, wallet...).
+
+### Decisión
+Organizar por **capa técnica**.
+
+### Por qué
+- Respuesta: Por que permite ver el flujo de la aplicacion de forma mas simple y de que partes esta hecha
+
+
+### Alternativa descartada
+- **Por funcionalidad:** la descarté por funcionalidad ya que no permite organizar
+
+### Consecuencias / costos
+- (Respuesta a: ¿qué pasaría si el proyecto creciera mucho?)
