@@ -184,12 +184,15 @@ account/accoutController/accoutService/accoutRepository
 account/clientController/clientService/clientRepository
 account/transferController/transferService/transferRepository
 
-Organizar por funcionalidades es mas facil en un proyecto grande mientras que organizar por funcionalidades es mucho mas facil para entrender la estructura del proyecto a la hora de leerlo
+Organizar por funcionalidades es más fácil en un proyecto grande mientras que organizar por funcionalidades es mucho mas
+facil para entrender la estructura del proyecto a la hora de leerlo
 • Por qué la clase de arranque suele ubicarse por encima de los demás paquetes.
 Porque la ubicación de la clase de arranque determina, por defecto, desde donde Spring empieza a buscar componentes
-La clase de arranque suele ubicarse en el paquete raíz para que el component scanning pueda descubrir automáticamente todos los componentes de la aplicación.
+La clase de arranque suele ubicarse en el paquete raíz para que el component scanning pueda descubrir automáticamente
+todos los componentes de la aplicación.
 
 ### Preguntas de control Etapa 3
+
 1 ¿Dónde viviría la regla de fondos suficientes y por qué?
 Service
 2 ¿Quién debería saber que la comunicación usa HTTP?
@@ -197,8 +200,92 @@ Controller
 3 ¿Quién debería saber cómo consultar la base de datos?
 Repository
 4 ¿Qué síntoma indica que una clase tiene demasiadas responsabilidades?
-No puedes describir qué hace en una sola frase sin usar "y". Por ejemplo: "valida el cliente y calcula saldos y envía emails…".
-Cambia por muchos motivos distintos. Si la tocas cuando cambia una regla de dinero, cuando cambia el formato del email y cuando cambia la base de datos, tiene varias responsabilidades.
+No puedes describir qué hace en una sola frase sin usar "y". Por ejemplo: "valida el cliente y calcula saldos y envía
+emails…".
+Cambia por muchos motivos distintos. Si la tocas cuando cambia una regla de dinero, cuando cambia el formato del email y
+cuando cambia la base de datos, tiene varias responsabilidades.
 Recibe muchas dependencias en el constructor.
 Sus pruebas necesitan mucha preparación para probar una sola cosa.
 
+### Etapa 4 Modelar el dominio
+
+• Diferencia entre entidad, objeto de valor y objeto de transferencia.
+Entidad:Un objeto que tiene identidad única que permanece aunque cambie sus atributos.
+Tiene un identificado único eso hace que 2 dos entidades puedan tener los datos igualen, pero aun asi se diferencien.
+Representa una cosa que necesita ser distinguida individualmente mediante una identidad propia
+
+Objeto de valor (Value Object): Un objeto de valor no tiene identidad propia. Lo que importa es su valor. Se identifica
+porque tiene valor.
+Dos Value Object que tiene el mismo valor son iguales independientemente de que sean instancias diferentes en memoria.
+Un Value Object es un objeto de dominio que representa un concepto mediante sus atributos, carece de identidad propia y
+se considera igual a otro objeto cuando ambos representan el mismo valor. Normalmente, es inmutable y puede encapsular
+comportamiento relacionado con el valor que representa.
+Objeto de transferencia (DTO): Su objetivo es transportar información entre diferentes partes de la aplicación su
+objetivo principal no es tener lógica de negocio.
+Un dto está hecho para transporter información no para representar el comportamiento del dominio.
+Su principal objetivo es separar la estructura interna de la aplicación de lo que se expone o recibe externamente.
+
+• Por qué el dinero requiere precisión decimal exacta.
+En un sistema bancario serio necesitamos hacer cálculos y transacciones que sean muy precisas
+porque en java tenemos el valor double pero al hacer un calculo con este hay un pequeño margen de error porque double no
+almacena números decimales directamente. Los almacena utilizando binario y muchos números decimales y muchos números no
+pueden representarse con una cantidad finita de bits. Lo que hace que al hacer cálculos con un valor este acabe
+modificándose lo que a la larga en un sistema bancario crearía problemas muy grandes en nuestro sistema porque los
+valores están alterados.  
+• Diferencia entre instante global y fecha y hora sin zona.
+Instante global (Instant):Representa un instante exacto en la línea temporal, independientemente de donde esté la
+persona, Fecha Tiempo Lugar (año/mes/día/ hora / lugar) tiene mucha precision y es lo mas adecuado para algo como las
+transacciones que una misma hora puede cambiar mucho dependiendo del lugar.
+Fecha y hora sin zona (LocalDateTime):Representa el momento exacto, pero sin el lugar, puede ser adecuado para ciertos
+momentos en los que el lugar no determine una variable importante. Siendo otro caso se podria usar ZonedDateTime que es
+simple pero especifica el lugar
+
+• Ventajas y costos de identificadores numéricos y universales.
+ID Numéricos: pequeños, rápido y simple, pero normalmente require de coordination para generarlo
+Universales (UUID/Universally Unique Identifier):grande y menos eficiente, pero puede generarse de forma descentralizada
+y es adecuado para sistemas distribuidos.
+• Qué significan cardinalidad, propiedad de la relación y carga diferida.
+Cardinalidad:Cuantas instancias de una entidad pueden estar relacionadas con una instancia de otra entidad:
+@OneToOne → uno a uno | Persona → DNI
+@OneToMany → uno a muchos | Clientes ⇒ Cuentas
+@ManyToOne → uno a muchos | Clientes ⇒ Cuentas
+@ManyToMany → muchos a muchos | Alumno ⇒ Curso
+Propiedad de la relación:responde a la pregunta -> Qué entidad es la reponsable de guardar/mantener la relación en la
+base de datos?
+Una entidad puede ser propietaria de otra:
+Cliente → lado inverso
+Cuenta → lado propietario
+La propiedad es un concepto de JPA, pero se configura mediante anotaciones en el código.
+mappedBy = "cliente" =>La relación NO la controlo yo. La relación está definida por el atributo cliente
+Carga diferida:No cargar todos los datos hasta que realmente los necesites
+fetch = FetchType.LAZY = "Cárgalo cuando lo necesite."
+fetch = FetchType.EAGER = "Cárgalo inmediatamente junto con la entidad."
+• Qué implica que un movimiento sea inmutable desde el negocio.
+Las reglas de negocio de la aplicación no permiten modificar un movimiento una vez registrado.
+Todo queda registrado en el sistema y la historia no puede ser modificada.
+hechos financieros registrados no se editan ni se borran como si fueran datos normales.
+No reescribir el pasado;
+registrar nuevos hechos que expliquen lo que ocurrió después.
+
+Preguntas de control
+1 ¿Por qué el saldo no debería ser un número de punto flotante binario?
+Por que las operaciones con doble no dan un resultado exacto y tienen cierto margen de error en los decimales.
+2 ¿Qué diferencia existe entre identificar un movimiento y agrupar los dos lados de una transferencia?
+La diferencia radica en:
+ID movimiento =>Cuál es este movimiento?
+ID transferencia => A que operacion pertenece este movimiento?
+Esto se hace porque una transferencia es una sola operacion de negocio, pero produce dos efectos contables distintos.
+La transferencia es el "evento" y los movimientos son las "consecuencias" financieras del evento.
+3 ¿Quién puede modificar el saldo y bajo qué condiciones?
+En un sistema bien diseñado el saldo no debería ser modificado arbitrariamente por cualquier parte del sistema. En
+nuestro sistema debemos preguntas quien tiene autoridad y que condiciones debe cumplir.
+No diseñes el saldo como algo que cualquier parte del programa puede cambiar. Diseñá operaciones financieras que, cuando
+son válidas, producen entradas que cambian el balance.
+
+4 ¿Necesitas almacenar una lista de movimientos dentro de la billetera para poder consultarlos?
+No, en la base de datos puede haber una entidad que sean los movimientos que ocurrieron
+Billetera ────── Movimiento
+1                    N
+La FK normalmente vive en Movimiento.
+5 ¿Qué zona horaria usarás internamente y cómo la explicarás?
+Instant y DateTime
