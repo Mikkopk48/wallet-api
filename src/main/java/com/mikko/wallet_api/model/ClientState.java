@@ -4,7 +4,7 @@ public enum ClientState {
     ABLE,
     INACTIVE,
     BLOCKED,
-    UNDER_REWIEW,
+    UNDER_REVIEW,
     CLOSED,
     DELINQUENT,    // Cliente con atrasos en pagos
     IRRECOVERABLE  // Cliente con deuda incobrable
